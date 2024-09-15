@@ -1,8 +1,14 @@
 const express = require("express");
+const morgan = require('morgan');
 require("dotenv").config();
 
 // Create the express server
 const app = express();
+
+// development logging
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 // Public Directory
 app.use(express.static("public"));
