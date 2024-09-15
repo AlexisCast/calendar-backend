@@ -3,6 +3,7 @@
   host + /api/auth 
 */
 const { Router } = require("express");
+const { check } = require("express-validator");
 const router = Router();
 
 const {
@@ -11,9 +12,28 @@ const {
 	revalidateToken,
 } = require("../controllers/auth");
 
-router.post("/new", createUser);
+router.post(
+	"/new",
+	[
+		check("name", "The name is mandatory.").not().isEmpty(),
+		check("email", "The email is mandatory.").isEmail(),
+		check("password", "The password must be 6 letters.").isLength({
+			min: 6,
+		}),
+	],
+	createUser
+);
 
-router.post("/", loginUser);
+router.post(
+	"/",
+	[
+		check("email", "The email is mandatory.").isEmail(),
+		check("password", "The password must be 6 letters.").isLength({
+			min: 6,
+		}),
+	],
+	loginUser
+);
 
 router.get("/renew", revalidateToken);
 
