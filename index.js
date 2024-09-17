@@ -1,13 +1,17 @@
 const express = require("express");
-const morgan = require('morgan');
+const morgan = require("morgan");
 require("dotenv").config();
+const { dbConnection } = require("./database/config");
 
 // Create the express server
 const app = express();
 
+// Data Base
+dbConnection();
+
 // development logging
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") {
+	app.use(morgan("dev"));
 }
 
 // Public Directory
