@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 require("dotenv").config();
+var cors = require("cors");
 const { dbConnection } = require("./database/config");
 
 // Create the express server
@@ -8,6 +9,9 @@ const app = express();
 
 // Data Base
 dbConnection();
+
+// CORS
+app.use(cors());
 
 // development logging
 if (process.env.NODE_ENV === "development") {
