@@ -8,7 +8,7 @@ const getEvents = async (req, res = response) => {
 };
 
 const createEvent = async (req, res = response) => {
-	res.json({
+res.json({
 		ok: true,
 		msg: "create event",
 	});
