@@ -4,8 +4,11 @@
 */
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { validateJWT } = require("../middlewares/validate-jwt");
 
+const { isDate } = require("../helpers/isDate");
+
+const { fieldValidators } = require("../middlewares/field-validators");
+const { validateJWT } = require("../middlewares/validate-jwt");
 const {
 	getEvents,
 	createEvent,
@@ -20,7 +23,16 @@ router.use(validateJWT);
 
 router.get("/", getEvents);
 
-router.post("/", createEvent);
+router.post(
+	"/",
+	[
+		check("title", "The title is mandatory").not().isEmpty(),
+		check("start", "Start Date is mandatory").custom(isDate),
+		check("end", "End Date is mandatory").custom(isDate),
+		fieldValidators,
+	],
+	createEvent
+);
 
 router.put("/:id", updateEvent);
 
