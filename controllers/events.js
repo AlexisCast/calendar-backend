@@ -74,10 +74,41 @@ const updateEvent = async (req, res = response) => {
 };
 
 const deleteEvent = async (req, res = response) => {
-	res.json({
-		ok: true,
-		msg: "delete event",
-	});
+	const eventId = req.params.id;
+	const uid = req.uid;
+
+	try {
+		const event = await Event.findById(eventId);
+
+		if (!event) {
+			return res.status(404).json({
+				ok: false,
+				msg: "Event does not exist by id.",
+			});
+		}
+
+		if (event.user.toString() != uid) {
+			return res.status(401).json({
+				ok: false,
+				msg: "Not authorized to eliminate this event",
+			});
+		}
+
+		const deletedEvent = await Event.findOneAndDelete(eventId, {
+			new: true,
+		});
+
+		res.json({
+			ok: true,
+			event: deletedEvent,
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			ok: false,
+			msg: "Contact the administrator.",
+		});
+	}
 };
 
 module.exports = {
