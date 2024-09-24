@@ -1,7 +1,13 @@
 # calendar-backend
 
+## Development:
+1. Install dependencies `npm i`
+2. Clone the file `.env.template` file, rename it to`.env` and update/save environment variables.
+3. Run server `npm run dev`
 
 ## Env File:
+Clone the file `.env.template` file, rename it to`.env` and update/save environment variables.
+
 - PORT
 - NODE_ENV
 - DB_CNN=mongodb+srv://<db_username>:<db_password>@cluster0.xeddqmz.mongodb.net/nameOfDataBase
