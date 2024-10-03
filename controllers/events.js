@@ -78,6 +78,7 @@ const deleteEvent = async (req, res = response) => {
 	const uid = req.uid;
 
 	try {
+		// Find the event by its ID
 		const event = await Event.findById(eventId);
 
 		if (!event) {
@@ -87,17 +88,25 @@ const deleteEvent = async (req, res = response) => {
 			});
 		}
 
-		if (event.user.toString() != uid) {
+		// Check if the user is authorized to delete the event
+		if (event.user.toString() !== uid) {
 			return res.status(401).json({
 				ok: false,
 				msg: "Not authorized to eliminate this event",
 			});
 		}
 
-		const deletedEvent = await Event.findOneAndDelete(eventId, {
-			new: true,
-		});
+		// Use findByIdAndDelete with the correct filter
+		const deletedEvent = await Event.findByIdAndDelete(eventId);
 
+		if (!deletedEvent) {
+			return res.status(404).json({
+				ok: false,
+				msg: "Event could not be deleted.",
+			});
+		}
+
+		// Respond with the deleted event information
 		res.json({
 			ok: true,
 			event: deletedEvent,
