@@ -14,9 +14,14 @@ const {
 	createEvent,
 	updateEvent,
 	deleteEvent,
+	getAvailableEvents,
+	getAvailableGaps,
 } = require("../controllers/events");
 
 const router = Router();
+
+router.get("/available_1", getAvailableEvents);
+router.get("/available", getAvailableGaps);
 
 // All routes must pass by JWT validation
 router.use(validateJWT);
